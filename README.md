@@ -7,10 +7,13 @@ This lab included:
 * Domain Controller (DC-01)
 * Web Server (SRV-WEB-01)
 * Workstations (2) (WS-01,WS-02)
+* Linux for Command & Control 
 
 **History**: The idea of this lab is to simulate how an attacker from a phishing email can compromise a company using different tactics, techniques and procedures for initial access, lateral movement, credential stealling. 
 
 ## Install AutomatedLab
+
+This setup will automate the creation of the windows enviroment we are going to hack, this does not include the Linux Server for command & control. 
 
 It's recommended to run this lab from a VM without any restrictions, if you can create a new VM may avoid some problems. Run powershell as Administrator and install the AutomatedLab package using the following commands:
 
