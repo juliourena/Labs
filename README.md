@@ -4,9 +4,9 @@
 This setup describe the process to automate the lab deployement.
 
 This lab included:
-	* Domain Controller (DC-01)
-	* Web Server (SRV-WEB-01)
-	* Workstations (2) (WS-01,WS-02)
+*Domain Controller (DC-01)
+*Web Server (SRV-WEB-01)
+*Workstations (2) (WS-01,WS-02)
 
 **History**: The idea of this lab is to simulate how an attacker from a phishing email can compromise a company using different tactics, techniques and procedures for initial access, lateral movement, credential stealling. 
 
@@ -32,8 +32,8 @@ The setups takes aproximately 1 hour, them you will need to install Office into 
 
 ## Tenant configuration:
 From https://securitycenter.microsoft.com go to Settings > Advanced features and disable:
-	* Allow or Block file
-	* Automatically resolve alerts
+* Allow or Block file
+* Automatically resolve alerts
 
 ## Command & Control Configuration with Covenant 
 
@@ -45,17 +45,51 @@ In order to install covenant we will use a Ubuntu Server (Azure Image Ubuntu Ser
 
 Once you installed Ubuntu Server make sure to have open ports: (22,80,443,8000) and connect to install dotnet (dotnet is used to build & run Covenant):
 
+### Installation
+
+Be sure to clone Covenant recursively to initialize the git submodules: git clone --recurse-submodules https://github.com/cobbr/Covenant
+
+Be sure to install the dotnet core version 2.2 SDK! Covenant does not yet support dotnet core 3.0, and the SDK is necessary to build the project (not just the runtime).
+
+```
+wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+
+sudo add-apt-repository universe
+sudo apt-get update
+sudo apt-get install apt-transport-https
+sudo apt-get update
+sudo apt-get install dotnet-sdk-2.2
+
+sudo add-apt-repository universe
+sudo apt-get update
+sudo apt-get install apt-transport-https
+sudo apt-get update
+sudo apt-get install aspnetcore-runtime-2.2
+
+sudo add-apt-repository universe
+sudo apt-get update
+sudo apt-get install apt-transport-https
+sudo apt-get update
+
+sudo apt-get install dotnet-runtime-2.2
+
 ```
 
+Once you have installed dotnet core, we can build and run Covenant using the dotnet CLI:
+
+```
+cd /opt
+git clone --recurse-submodules https://github.com/cobbr/Covenant
+cd Covenant/Covenant
+/opt/Covenant/Covenant > dotnet build
+/opt/Covenant/Covenant > dotnet run
 ```
 
 ## Hack Them All Step by Steps
 
 To complete the lab setup you will need to complete 2 manual process:
-	* Install on WS-01 Office for the 1st step of Initial Access (Phishing received in Outlook). 
-	* Install Ubuntu Server in Azure 
-	
-**Ubuntu Server** Once you install the ubuntu server you will need to use 
+* Install on WS-01 Office for the 1st step of Initial Access (Phishing received in Outlook). 
 
 ### History:
 	1. Initial Access - lewen get phished and the attacker get command and control over WS-01 PC.
