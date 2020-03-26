@@ -4,9 +4,9 @@
 This setup describe the process to automate the lab deployement.
 
 This lab included:
-*Domain Controller (DC-01)
-*Web Server (SRV-WEB-01)
-*Workstations (2) (WS-01,WS-02)
+* Domain Controller (DC-01)
+* Web Server (SRV-WEB-01)
+* Workstations (2) (WS-01,WS-02)
 
 **History**: The idea of this lab is to simulate how an attacker from a phishing email can compromise a company using different tactics, techniques and procedures for initial access, lateral movement, credential stealling. 
 
@@ -46,8 +46,6 @@ In order to install covenant we will use a Ubuntu Server (Azure Image Ubuntu Ser
 Once you installed Ubuntu Server make sure to have open ports: (22,80,443,8000) and connect to install dotnet (dotnet is used to build & run Covenant):
 
 ### Installation
-
-Be sure to clone Covenant recursively to initialize the git submodules: git clone --recurse-submodules https://github.com/cobbr/Covenant
 
 Be sure to install the dotnet core version 2.2 SDK! Covenant does not yet support dotnet core 3.0, and the SDK is necessary to build the project (not just the runtime).
 
