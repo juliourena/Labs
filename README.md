@@ -158,7 +158,7 @@ The Example part is really important, that's the way the flag should be entered 
 
 You should enter into the MDATP console and look for challenges, the following alert have different information, you can pick anything as a challenge:
 
-![MDATP-alert](https://github.com/juliourena/Labs/tree/master/img/MDATP-alert.png?raw=true)
+![MDATP-alert](https://raw.githubusercontent.com/juliourena/Labs/master/img/MDATP-alert.png)
 
 1. What's the IP address/DNS of the command and control? 
 2. What's the name of the word document? 
