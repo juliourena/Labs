@@ -168,6 +168,14 @@ You should enter into the MDATP console and look for challenges, the following a
 2. What's the name of the word document? 
 3. Which ports connection where stablished to the IP of the command and control server? 
 
+### Other examples:
+
+1. From which computer was the DCSync attack carried out and which account was used for that? *Example:ws-equipo-01,JULIODEMO\jurena*
+2. In incident 114 go to Alerts and select the alert "Suspicious WMI process creation" indicate what is the name of the computer and the IP address that was made lateral movement and what was the method. *Example: ws-team-01,2.2.2.2, DCOM*
+3. In incident 114, "Sensitive credential memory read on ws-dev-01", check the TimeLine and select the filter "Alert related events", identify What was the account that the attacker compromised after extracting the credentials and what was the Contents of the Command line from the first run of cmd.exe. *Example: JULIODEMO\jurena, "cmd.exe" / c echo test*
+4. LOLBins (Living of the Land Binary) allows attackers to create malicious processes using system programs to avoid detection. In Incident 113 and using the alert ** Use of living-of-the-land binary to run malicious code ** say which executable was used to avoid detection. *Example: notepad.exe*
+5. MITER ATT & CK (for its acronym in English, Tactics, Techniques and Common Knowledge of Adversaries), is a platform that organizes and categorizes the different types of attacks, threats and procedures carried out by different attackers in the digital world and that allows identifying vulnerabilities in computer systems. In incident 113, the alert ** Suspicious LDAP query on ws-rrhh-01 ** is categorized as ** Collection **. Mention the number of the 3 techniques used according to the MITER Framework. *Example:T3232,T1312,T1435*
+
 **Notes**
 * Ask 3 or 4 people to do the challenges before you present, that will help you understand if the are some errors.
 * You may ask people that don't know how to use Microsoft Solutions
