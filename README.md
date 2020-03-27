@@ -30,7 +30,9 @@ Install-Module AutomatedLab -AllowClobber -Force
 
 Download the [LabSetup](https://github.com/juliourena/Labs/tree/master/LabSetup) directory and copy into C:\tools\.
 
-Go to your [MDATP](https://securitycenter.microsoft.com) tenant and download the onboarding package for *Windows 10* & *Windows Server 2019*, place both files within *C:\tools\LabSetup\ *, the onboard package for **WS2019** must have the following name: **server-WindowsDefenderATPLocalOnboardingScript.cmd** and the **Windows 10** onboarding package must remain the same. 
+Go to your [MDATP](https://securitycenter.microsoft.com) tenant and download the onboarding package for *Windows 10* & *Windows Server 2019*, place both files within *C:\tools\LabSetup\ *.
+
+The onboard package for **WS2019** must have the following name: **server-WindowsDefenderATPLocalOnboardingScript.cmd** and the **Windows 10** onboarding package must remain the same. 
 
 Remove the USER_CONSENT section from both onboarding files, for silent install. USER_CONSENT section to be removed: 
 
@@ -50,7 +52,7 @@ GOTO USER_CONSENT
 
 ### Install the Lab
 
-You can check the content of C:\tools\LabSetup\deploy_lab.ps1 and edit the variables defined: LabName, Domain, DomainName, adminAcct, adminPass, labsources and machines names.
+**Make sure to change de default credentials!** Go to C:\tools\LabSetup\deploy_lab.ps1 and edit the variables defined: LabName, Domain, DomainName, adminAcct, adminPass, labsources and machines names.
 
 ```
 Import-Module AutomatedLab
@@ -70,11 +72,13 @@ From https://securitycenter.microsoft.com go to Settings > Advanced features and
 
 You can use any Command & Control tool, this example is based on Covenant for simplification. 
 
-In order to install covenant we will use a Ubuntu Server (Azure Image Ubuntu Server 18.04 LTS), the process to install the ubuntu server are not part of this tutorial. 
+In order to install covenant we will use a **Ubuntu Server (Azure Image Ubuntu Server 18.04 LTS)**, the process to install the ubuntu server are not part of this tutorial. 
 
 Once you installed Ubuntu Server make sure to have open ports: (22,80,443,8000) and connect to install dotnet (dotnet is used to build & run Covenant):
 
 ### Installation
+
+Covenant use dotnet, in order to install Covenant we need to 1st install dotnet.
 
 Be sure to install the dotnet core version 2.2 SDK! Covenant does not yet support dotnet core 3.0, and the SDK is necessary to build the project (not just the runtime).
 
@@ -128,3 +132,38 @@ Before you move to replicate the attack, you need to:
 	7. Lateral Movement - with kkreps credentials the attacker access a WebServer (SRV-WEB-01) using PSEXEC.
 	8. Credential Stealing - within SRV-WEB-01 the attacker was able to get the hash of a sqladmin user which ended up being part of the Domain Admin group.
 	9. DCSync - with the new obtained credentials the attacker execute DCSync to get all users hashes.  
+	
+## Creating the CTF
+
+For the CTF platform you can use any platform, I used [CTFd](https://github.com/CTFd/CTFd).
+
+### What is CTFd?
+CTFd is a Capture The Flag framework focusing on ease of use and customizability. It comes with everything you need to run a CTF and it's easy to customize with plugins and themes.
+
+[Getting Started Guide](https://github.com/CTFd/CTFd/wiki/Getting-Started)
+
+### How to create the challenges
+
+The challenges tells the history of the attacks, you can to organize the challenges in a way the participants follow the attack. 
+
+#### Example 1 
+
+Let's imagine the attack you did started with phishing, a sample challenge can be: 
+
+1. Looking at Incident #100 the Alert "Network Conection to a Risky Host" identify which computer and user started the attack chain? Example: PC-01,DOMAIN\username
+
+The Example part is really important, that's the way the flag should be entered and it helps the participants to know how to answer correctly. 
+
+#### Example 2
+
+You should enter into the MDATP console and look for challenges, the following alert have different information, you can pick anything as a challenge:
+
+![MDATP-alert](https://github.com/juliourena/Labs/tree/master/img/MDATP-alert.png?raw=true)
+
+1. What's the IP address/DNS of the command and control? 
+2. What's the name of the word document? 
+3. Which ports connection where stablished to the IP of the command and control server? 
+
+**Notes**
+* Ask 3 or 4 people to do the challenges before you present, that will help you understand if the are some errors.
+* You may ask people that don't know how to use Microsoft Solutions
