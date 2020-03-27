@@ -34,26 +34,26 @@ $role = Get-LabMachineRoleDefinition -Role RootDC @{
 
 Add-LabMachineDefinition -Name $DC -Memory 4gb -OperatingSystem 'Windows Server 2019 Datacenter (Desktop Experience)' -IpAddress '192.168.2.5' -Roles $role -DomainName $domain
 
-Add-LabMachineDefinition -Name $SRVWEB -Memory 2gb -OperatingSystem 'Windows Server 2019 Datacenter (Desktop Experience)' -IpAddress '192.168.2.10' -DnsServer1 '192.168.2.5' -Roles WebServer -DomainName $domain -Network 'IntoTheBreach'
+Add-LabMachineDefinition -Name $SRVWEB -Memory 4gb -OperatingSystem 'Windows Server 2019 Datacenter (Desktop Experience)' -IpAddress '192.168.2.10' -DnsServer1 '192.168.2.5' -Roles WebServer -DomainName $domain -Network 'IntoTheBreach'
 
-Add-LabMachineDefinition -Name $WS1 -Memory 2gb -OperatingSystem 'Windows 10 Enterprise' -IpAddress '192.168.2.101' -DnsServer1 '192.168.2.5' -DomainName $domain -Network 'IntoTheBreach'
+Add-LabMachineDefinition -Name $WS1 -Memory 4gb -OperatingSystem 'Windows 10 Enterprise' -IpAddress '192.168.2.101' -DnsServer1 '192.168.2.5' -DomainName $domain -Network 'IntoTheBreach'
 
 Add-LabMachineDefinition -Name $WS2 -Memory 2gb -OperatingSystem 'Windows 10 Enterprise' -IpAddress '192.168.2.102' -DnsServer1 '192.168.2.5' -DomainName $domain -Network 'IntoTheBreach'
 
 Install-Lab | Add-Content -Path ".\IntoTheBreach.log"
 
 # Copy GPO
-Copy-LabFileItem -Path C:\tools\LabSetup\GPO -ComputerName $DC -DestinationFolderPath C:\
+Copy-LabFileItem -Path C:\tools\LabSetup\GPO -ComputerName $DC -DestinationFolderPath 'C:\'
 
 # Configure fake accounts, OU, groups and GPOs
 Invoke-LabCommand -FilePath C:\tools\LabSetup\LabSetup.ps1 -ComputerName $DC 
 
 # Onboarding MDATP
 # Send Onboarding package to machines 
-Copy-LabFileItem -Path C:\tools\LabSetup\server-WindowsDefenderATPLocalOnboardingScript.cmd -ComputerName $DC -DestinationFolderPath C:\
-Copy-LabFileItem -Path C:\tools\LabSetup\server-WindowsDefenderATPLocalOnboardingScript.cmd -ComputerName (Get-LabVM -ComputerName $SRVWEB) -DestinationFolderPath C:\
-Copy-LabFileItem -Path C:\tools\LabSetup\WindowsDefenderATPLocalOnboardingScript.cmd -ComputerName (Get-LabVM -ComputerName $WS1) -DestinationFolderPath C:\
-Copy-LabFileItem -Path C:\tools\LabSetup\WindowsDefenderATPLocalOnboardingScript.cmd -ComputerName $WS2 -DestinationFolderPath C:\
+Copy-LabFileItem -Path C:\tools\LabSetup\server-WindowsDefenderATPLocalOnboardingScript.cmd -ComputerName $DC -DestinationFolderPath 'C:\'
+Copy-LabFileItem -Path C:\tools\LabSetup\server-WindowsDefenderATPLocalOnboardingScript.cmd -ComputerName $SRVWEB -DestinationFolderPath 'C:\'
+Copy-LabFileItem -Path C:\tools\LabSetup\WindowsDefenderATPLocalOnboardingScript.cmd -ComputerName $WS1 -DestinationFolderPath 'C:\'
+Copy-LabFileItem -Path C:\tools\LabSetup\WindowsDefenderATPLocalOnboardingScript.cmd -ComputerName $WS2 -DestinationFolderPath 'C:\'
 
 # Run Onboarding package 
 Invoke-LabCommand -ScriptBlock { C:\server-WindowsDefenderATPLocalOnboardingScript.cmd } -ComputerName $DC
@@ -83,11 +83,11 @@ $WS2Vm | Stop-AzVM -ResourceGroupName $labName -force
 
 # Resize VM to a lower cost image.
 #$DcVm.HardwareProfile.VmSize = "Standard_B1ms"
-$SRVWEBVm.HardwareProfile.VmSize = "Standard_B1ms"
-$WS1Vm.HardwareProfile.VmSize = "Standard_B1ms"
+#$SRVWEBVm.HardwareProfile.VmSize = "Standard_B1ms"
+#$WS1Vm.HardwareProfile.VmSize = "Standard_B1ms"
 $WS2Vm.HardwareProfile.VmSize = "Standard_B1ms"
 
 #Update-AzVM -VM $DcVm -ResourceGroupName $labName -Verbose
-Update-AzVM -VM $SRVWEBVm -ResourceGroupName $labName -Verbose
-Update-AzVM -VM $WS1Vm -ResourceGroupName $labName -Verbose
+#Update-AzVM -VM $SRVWEBVm -ResourceGroupName $labName -Verbose
+#Update-AzVM -VM $WS1Vm -ResourceGroupName $labName -Verbose
 Update-AzVM -VM $WS2Vm -ResourceGroupName $labName -Verbose

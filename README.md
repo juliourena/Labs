@@ -28,9 +28,11 @@ Install-PackageProvider Nuget -Force
 Install-Module AutomatedLab -AllowClobber -Force
 ```
 
-Download from the repository LabSetup and copy into C:\tools\, from the powershell session run the following command:
+Download the [LabSetup](https://github.com/juliourena/Labs/tree/master/LabSetup) directory and copy into C:\tools\.
 
-Go to your MDATP (https://securitycenter.microsoft.com) tenant and download the onboarding package for Windows 10 & Windows Server 2019, place both files within C:\tools\LabSetup, the onboard package for WS2019 must have the following name: server-WindowsDefenderATPLocalOnboardingScript.cmd and the Windows 10 onboarding package must remain the same. Then you must remove the USER_CONSENT, for silent install, as refered in this example:
+Go to your [MDATP](https://securitycenter.microsoft.com) tenant and download the onboarding package for *Windows 10* & *Windows Server 2019*, place both files within *C:\tools\LabSetup\ *, the onboard package for **WS2019** must have the following name: **server-WindowsDefenderATPLocalOnboardingScript.cmd** and the **Windows 10** onboarding package must remain the same. 
+
+Remove the USER_CONSENT section from both onboarding files, for silent install. USER_CONSENT section to be removed: 
 
 ```
 :USER_CONSENT
@@ -46,7 +48,9 @@ echo Wrong input. Please try again.
 GOTO USER_CONSENT
 ```
 
-Then instal the Lab:
+### Install the Lab
+
+You can check the content of C:\tools\LabSetup\deploy_lab.ps1 and edit the variables defined: LabName, Domain, DomainName, adminAcct, adminPass, labsources and machines names.
 
 ```
 Import-Module AutomatedLab
@@ -111,8 +115,8 @@ sudo dotnet run
 
 ## Hack Them All Step by Steps
 
-To complete the lab setup you will need to complete 2 manual process:
-* Install on WS-01 Office for the 1st step of Initial Access (Phishing received in Outlook). 
+Before you move to replicate the attack, you need to:
+* Install on WS-01 Office for the 1st step of Initial Access (Phishing received in Outlook/Word). 
 
 ### History:
 	1. Initial Access - lewen get phished and the attacker get command and control over WS-01 PC.
