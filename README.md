@@ -52,7 +52,7 @@ GOTO USER_CONSENT
 
 ### Install the Lab
 
-**Make sure to change de default credentials!** Go to C:\tools\LabSetup\deploy_lab.ps1 and edit the variables defined: LabName, Domain, DomainName, adminAcct, adminPass, labsources and machines names.
+**Make sure to change de default credentials!** Go to C:\tools\LabSetup\deploy_lab.ps1 and edit the variables defined: LabName, Domain, DomainName, adminAcct, adminPass, labsources and machines names, also make sure to change C:\tools\LabSetup\SNMPTRAP.ps1 variables.
 
 ```
 Import-Module AutomatedLab
@@ -60,6 +60,10 @@ C:\tools\LabSetup\deploy_lab.ps1
 ```
 
 The setups takes aproximately 1 hour, them you will need to install Office into WS-01 manually, this is to simulate the phishing comming from Outlook. 
+
+To connect to the lab make sure to check which port is using each VM
+
+![MDATP-alert](https://raw.githubusercontent.com/juliourena/Labs/master/img/WS-01-port.png)
 
 ## Tenant configuration:
 From https://securitycenter.microsoft.com go to Settings > Advanced features and disable:

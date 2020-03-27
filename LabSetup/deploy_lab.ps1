@@ -32,21 +32,18 @@ $role = Get-LabMachineRoleDefinition -Role RootDC @{
 
 # Deploying DC and Client machine. (Server has less cost and less services by default)
 
-Add-LabMachineDefinition -Name $DC -Memory 4gb -OperatingSystem 'Windows Server 2019 Datacenter (Desktop Experience)' -IpAddress '192.168.2.5' -Roles $role -DomainName $domain
+Add-LabMachineDefinition -Name $DC -OperatingSystem 'Windows Server 2019 Datacenter (Desktop Experience)' -IpAddress '192.168.2.5' -Roles $role -DomainName $domain
 
-Add-LabMachineDefinition -Name $SRVWEB -Memory 4gb -OperatingSystem 'Windows Server 2019 Datacenter (Desktop Experience)' -IpAddress '192.168.2.10' -DnsServer1 '192.168.2.5' -Roles WebServer -DomainName $domain -Network 'IntoTheBreach'
+Add-LabMachineDefinition -Name $SRVWEB -OperatingSystem 'Windows Server 2019 Datacenter (Desktop Experience)' -IpAddress '192.168.2.10' -DnsServer1 '192.168.2.5' -Roles WebServer -DomainName $domain -Network 'IntoTheBreach'
 
-Add-LabMachineDefinition -Name $WS1 -Memory 4gb -OperatingSystem 'Windows 10 Enterprise' -IpAddress '192.168.2.101' -DnsServer1 '192.168.2.5' -DomainName $domain -Network 'IntoTheBreach'
+Add-LabMachineDefinition -Name $WS1 -OperatingSystem 'Windows 10 Enterprise' -IpAddress '192.168.2.101' -DnsServer1 '192.168.2.5' -DomainName $domain -Network 'IntoTheBreach'
 
-Add-LabMachineDefinition -Name $WS2 -Memory 2gb -OperatingSystem 'Windows 10 Enterprise' -IpAddress '192.168.2.102' -DnsServer1 '192.168.2.5' -DomainName $domain -Network 'IntoTheBreach'
+Add-LabMachineDefinition -Name $WS2 -OperatingSystem 'Windows 10 Enterprise' -IpAddress '192.168.2.102' -DnsServer1 '192.168.2.5' -DomainName $domain -Network 'IntoTheBreach'
 
 Install-Lab | Add-Content -Path ".\IntoTheBreach.log"
 
-# Copy GPO
-Copy-LabFileItem -Path C:\tools\LabSetup\GPO -ComputerName $DC -DestinationFolderPath 'C:\'
-
-# Configure fake accounts, OU, groups and GPOs
-Invoke-LabCommand -FilePath C:\tools\LabSetup\LabSetup.ps1 -ComputerName $DC 
+# Configure fake accounts, OU and groups
+Invoke-LabCommand -ActivityName "Configure Domain Controller" -FilePath C:\tools\LabSetup\LabSetup.ps1 -ComputerName $DC 
 
 # Onboarding MDATP
 # Send Onboarding package to machines 
@@ -56,18 +53,25 @@ Copy-LabFileItem -Path C:\tools\LabSetup\WindowsDefenderATPLocalOnboardingScript
 Copy-LabFileItem -Path C:\tools\LabSetup\WindowsDefenderATPLocalOnboardingScript.cmd -ComputerName $WS2 -DestinationFolderPath 'C:\'
 
 # Run Onboarding package 
-Invoke-LabCommand -ScriptBlock { C:\server-WindowsDefenderATPLocalOnboardingScript.cmd } -ComputerName $DC
-Invoke-LabCommand -ScriptBlock { C:\server-WindowsDefenderATPLocalOnboardingScript.cmd } -ComputerName $SRVWEB
-Invoke-LabCommand -ScriptBlock { C:\WindowsDefenderATPLocalOnboardingScript.cmd } -ComputerName $WS1
-Invoke-LabCommand -ScriptBlock { C:\WindowsDefenderATPLocalOnboardingScript.cmd } -ComputerName $WS2
+Invoke-LabCommand -ActivityName "MDATP Onboarding" -ScriptBlock { C:\server-WindowsDefenderATPLocalOnboardingScript.cmd } -ComputerName $DC
+Invoke-LabCommand -ActivityName "MDATP Onboarding" -ScriptBlock { C:\server-WindowsDefenderATPLocalOnboardingScript.cmd } -ComputerName $SRVWEB
+Invoke-LabCommand -ActivityName "MDATP Onboarding" -ScriptBlock { C:\WindowsDefenderATPLocalOnboardingScript.cmd } -ComputerName $WS1
+Invoke-LabCommand -ActivityName "MDATP Onboarding" -ScriptBlock { C:\WindowsDefenderATPLocalOnboardingScript.cmd } -ComputerName $WS2
+
 
 # Local Admins
-Invoke-LabCommand -ScriptBlock { Add-LocalGroupMember -Group 'Administrators' -Member ('SrvAdmins','kkreps') } -ComputerName $SRVWEB
-Invoke-LabCommand -ScriptBlock { Add-LocalGroupMember -Group 'Administrators' -Member ('DesktopAdmins','lewen') } -ComputerName $WS1
-Invoke-LabCommand -ScriptBlock { Add-LocalGroupMember -Group 'Administrators' -Member ('DesktopAdmins', 'kkreps') } -ComputerName $WS2
+Invoke-LabCommand -ActivityName "Setting up Local Admin" -ScriptBlock { Add-LocalGroupMember -Group 'Administrators' -Member ('SrvAdmins','kkreps') } -ComputerName $SRVWEB
+Invoke-LabCommand -ActivityName "Setting up Local Admin" -ScriptBlock { Add-LocalGroupMember -Group 'Administrators' -Member ('DesktopAdmins','lewen') } -ComputerName $WS1
+Invoke-LabCommand -ActivityName "Setting up Local Admin" -ScriptBlock { Add-LocalGroupMember -Group 'Administrators' -Member ('DesktopAdmins', 'kkreps') } -ComputerName $WS2
 
 # Configure sqlservice account to run the service SNMPTraps
-Invoke-LabCommand -FilePath C:\tools\LabSetup\SNMPTRAP.ps1 -ComputerName $SRVWEB
+Invoke-LabCommand -ActivityName "Configuring sqlservice account" -FilePath C:\tools\LabSetup\SNMPTRAP.ps1 -ComputerName $SRVWEB
+
+# Copy GPO
+Copy-LabFileItem -Path C:\tools\LabSetup\GPO -ComputerName $DC -DestinationFolderPath 'C:\'
+
+# Configure GPO 
+Invoke-LabCommand -ActivityName "Configure GPO to disable Defender" -FilePath C:\tools\LabSetup\GPO_Setup.ps1 -ComputerName $DC 
 
 Show-LabDeploymentSummary -Detailed 
 
@@ -82,12 +86,12 @@ $WS1Vm | Stop-AzVM -ResourceGroupName $labName -force
 $WS2Vm | Stop-AzVM -ResourceGroupName $labName -force
 
 # Resize VM to a lower cost image.
-#$DcVm.HardwareProfile.VmSize = "Standard_B1ms"
-#$SRVWEBVm.HardwareProfile.VmSize = "Standard_B1ms"
-#$WS1Vm.HardwareProfile.VmSize = "Standard_B1ms"
-$WS2Vm.HardwareProfile.VmSize = "Standard_B1ms"
+#$DcVm.HardwareProfile.VmSize = "Standard_B2ms"
+#$SRVWEBVm.HardwareProfile.VmSize = "Standard_B2ms"
+#$WS1Vm.HardwareProfile.VmSize = "Standard_B2ms"
+#$WS2Vm.HardwareProfile.VmSize = "Standard_B2ms"
 
 #Update-AzVM -VM $DcVm -ResourceGroupName $labName -Verbose
 #Update-AzVM -VM $SRVWEBVm -ResourceGroupName $labName -Verbose
 #Update-AzVM -VM $WS1Vm -ResourceGroupName $labName -Verbose
-Update-AzVM -VM $WS2Vm -ResourceGroupName $labName -Verbose
+#Update-AzVM -VM $WS2Vm -ResourceGroupName $labName -Verbose
