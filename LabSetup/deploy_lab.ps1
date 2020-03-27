@@ -2,8 +2,8 @@
 $labName = 'IntoTheBreach'
 $domain = 'zerotrustws.xyz'
 $domainName = 'ZeroTrust'
-$adminAcct = 'admin'
-$adminPass = 'SecurePassword!'
+$adminAcct = 'plaintext'
+$adminPass = 'SecurePassword01!'
 $labsources = "C:\tools\LabSetup"
 
 $DC='DC-01'

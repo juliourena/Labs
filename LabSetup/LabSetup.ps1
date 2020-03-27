@@ -1,7 +1,7 @@
 (new-object System.Net.WebClient).DownloadFile('https://gist.githubusercontent.com/darkoperator/e229781fe44edac94bb8bcb027d786f7/raw/e3f478f8a9427421c137fd8d13d1c5546bd5429e/accounting.csv', "$env:temp\Accounting.csv")
 (new-object System.Net.WebClient).DownloadFile('https://gist.githubusercontent.com/darkoperator/986058fbfe9fa18b537120b42762c82b/raw/d384504ee2d91ee28ef4834bbbc5fb9c3416d0e0/ops_acc.csv', "$env:temp\Ops.csv")
 (new-object System.Net.WebClient).DownloadFile('https://gist.githubusercontent.com/darkoperator/1e7eff7a1aeb082ba241037cfa02bc2f/raw/3ec7f4a7d40fb96d44d6c832f7360c0f674afe7c/hr_acc.csv', "$env:temp\HR.csv")
-(new-object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/juliourena/plaintext/master/Labs/IntoTheBreach/it_acc.csv', "$env:temp\IT.csv")
+(new-object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/juliourena/Labs/master/it_acc.csv', "$env:temp\IT.csv")
 (new-object System.Net.WebClient).DownloadFile('https://gist.githubusercontent.com/darkoperator/a3e31fa0d75550a820da6bea5d83c62e/raw/6e6b0b366151e0be5a8eeeec567e64e3c38a3171/marketing.csv', "$env:temp\Marketing.csv")
 (new-object System.Net.WebClient).DownloadFile('https://gist.githubusercontent.com/darkoperator/caa3414620c80bbab62435593358c774/raw/a8da36006066f161f19f2fa82b675e9fb7bcd4f5/sales.csv', "$env:temp\Sales.csv")
 (new-object System.Net.WebClient).DownloadFile('https://gist.githubusercontent.com/darkoperator/9f4b29a2e14542d593b24893ffeacbce/raw/da5c01f0ceba8ccd29917b63997f33d4f3e01371/support.csv', "$env:temp\Support.csv")

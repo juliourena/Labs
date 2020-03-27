@@ -19,12 +19,34 @@ It's recommended to run this lab from a VM without any restrictions, if you can 
 
 ```
 powershell -exec bypass -nop 
+```
+
+Install the required modules:
+```
 Install-Module Az -AllowClobber -Force
 Install-PackageProvider Nuget -Force
 Install-Module AutomatedLab -AllowClobber -Force
 ```
 
-Download the instalation package <link> to the directory C:\tools\LabSetup, from the powershell session run the following command:
+Download from the repository LabSetup and copy into C:\tools\, from the powershell session run the following command:
+
+Go to your MDATP (https://securitycenter.microsoft.com) tenant and download the onboarding package for Windows 10 & Windows Server 2019, place both files within C:\tools\LabSetup, the onboard package for WS2019 must have the following name: server-WindowsDefenderATPLocalOnboardingScript.cmd and the Windows 10 onboarding package must remain the same. Then you must remove the USER_CONSENT, for silent install, as refered in this example:
+
+```
+:USER_CONSENT
+set /p shouldContinue= "Press (Y) to confirm and continue or (N) to cancel and exit: "
+IF /I "%shouldContinue%"=="N" (
+	GOTO CLEANUP
+)
+IF /I "%shouldContinue%"=="Y" (
+	GOTO SCRIPT_START
+)
+echo.
+echo Wrong input. Please try again.
+GOTO USER_CONSENT
+```
+
+Then instal the Lab:
 
 ```
 Import-Module AutomatedLab
@@ -81,10 +103,10 @@ Once you have installed dotnet core, we can build and run Covenant using the dot
 
 ```
 cd /opt
-git clone --recurse-submodules https://github.com/cobbr/Covenant
+sudo git clone --recurse-submodules https://github.com/cobbr/Covenant
 cd Covenant/Covenant
-/opt/Covenant/Covenant > dotnet build
-/opt/Covenant/Covenant > dotnet run
+sudo dotnet build
+sudo dotnet run
 ```
 
 ## Hack Them All Step by Steps
