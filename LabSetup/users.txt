@@ -1,6 +1,10 @@
 WS-01
 	* lewen:Office365! - Personal Assistance CIO
 	* rjames:Ultrasecure! - DesktopAdmins
-
-jhassel:Reallysecure! - DA
-kkreps:Megasecure! - Developer
+WS-02
+	* kkreps:Megasecure! - Developer
+SRV-WEB-01
+	* kkreps	
+DC-01
+	* jhassel:Reallysecure! - DA
+	* sqlservice:Supersecure! - Domain Admin Account
