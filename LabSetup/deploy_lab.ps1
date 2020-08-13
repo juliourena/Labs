@@ -53,10 +53,10 @@ Copy-LabFileItem -Path C:\tools\LabSetup\WindowsDefenderATPLocalOnboardingScript
 Copy-LabFileItem -Path C:\tools\LabSetup\WindowsDefenderATPLocalOnboardingScript.cmd -ComputerName $WS2 -DestinationFolderPath 'C:\'
 
 # Run Onboarding package 
-Invoke-LabCommand -ActivityName "MDATP Onboarding" -ScriptBlock { C:\server-WindowsDefenderATPLocalOnboardingScript.cmd } -ComputerName $DC
-Invoke-LabCommand -ActivityName "MDATP Onboarding" -ScriptBlock { C:\server-WindowsDefenderATPLocalOnboardingScript.cmd } -ComputerName $SRVWEB
-Invoke-LabCommand -ActivityName "MDATP Onboarding" -ScriptBlock { C:\WindowsDefenderATPLocalOnboardingScript.cmd } -ComputerName $WS1
-Invoke-LabCommand -ActivityName "MDATP Onboarding" -ScriptBlock { C:\WindowsDefenderATPLocalOnboardingScript.cmd } -ComputerName $WS2
+Invoke-LabCommand -ActivityName "MDATP Onboarding" -ScriptBlock { C:\server-WindowsDefenderATPLocalOnboardingScript.cmd; Sleep 15 } -ComputerName $DC
+Invoke-LabCommand -ActivityName "MDATP Onboarding" -ScriptBlock { C:\server-WindowsDefenderATPLocalOnboardingScript.cmd; Sleep 15 } -ComputerName $SRVWEB
+Invoke-LabCommand -ActivityName "MDATP Onboarding" -ScriptBlock { C:\WindowsDefenderATPLocalOnboardingScript.cmd; Sleep 15 } -ComputerName $WS1
+Invoke-LabCommand -ActivityName "MDATP Onboarding" -ScriptBlock { C:\WindowsDefenderATPLocalOnboardingScript.cmd; Sleep 15 } -ComputerName $WS2
 
 
 # Local Admins
