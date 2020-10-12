@@ -84,8 +84,6 @@ Once you installed Ubuntu Server make sure to have open ports: (22,80,443,8000) 
 
 Covenant use dotnet, in order to install Covenant we need to 1st install dotnet.
 
-Be sure to install the dotnet core version 2.2 SDK! Covenant does not yet support dotnet core 3.0, and the SDK is necessary to build the project (not just the runtime).
-
 ```
 wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
@@ -94,20 +92,20 @@ sudo add-apt-repository universe
 sudo apt-get update
 sudo apt-get install apt-transport-https
 sudo apt-get update
-sudo apt-get install dotnet-sdk-2.2
+sudo apt-get install dotnet-sdk-3.1
 
 sudo add-apt-repository universe
 sudo apt-get update
 sudo apt-get install apt-transport-https
 sudo apt-get update
-sudo apt-get install aspnetcore-runtime-2.2
+sudo apt-get install aspnetcore-runtime-3.1
 
 sudo add-apt-repository universe
 sudo apt-get update
 sudo apt-get install apt-transport-https
 sudo apt-get update
 
-sudo apt-get install dotnet-runtime-2.2
+sudo apt-get install dotnet-runtime-3.1
 
 ```
 
