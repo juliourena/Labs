@@ -1,5 +1,5 @@
 $UserName = 'zerotrustws\sqlservice'
-$Service = 'SNMPTRAP'
+$Service = 'ALG'
 $Password = 'Supersecure!'
 
 $svcD=gwmi win32_service -filter "name='$service'"
