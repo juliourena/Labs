@@ -6,9 +6,9 @@
 # Install Azure AD on the Domain Controller 
 # Change MDATP scripts 
 
-$labName = 'MSRedTeam'
-$domain = 'msredteam.xyz'
-$domainName = 'MSREDTEAM'
+$labName = 'zerotrustws'
+$domain = 'zerotrustws.xyz'
+$domainName = 'zerotrustws'
 $adminAcct = 'plaintext'
 $adminPass = 'PASSWORD123!'
 $labsources = "C:\tools\Labs\LabSetup"
@@ -41,13 +41,13 @@ $role = Get-LabMachineRoleDefinition -Role RootDC @{
 
 Add-LabMachineDefinition -Name $DC -OperatingSystem 'Windows Server 2019 Datacenter (Desktop Experience)' -IpAddress '192.168.2.5' -Roles $role -DomainName $domain
 
-Add-LabMachineDefinition -Name $SRVWEB -OperatingSystem 'Windows Server 2019 Datacenter (Desktop Experience)' -IpAddress '192.168.2.10' -DnsServer1 '192.168.2.5' -Roles WebServer -DomainName $domain -Network 'MSRedTeam'
+Add-LabMachineDefinition -Name $SRVWEB -OperatingSystem 'Windows Server 2019 Datacenter (Desktop Experience)' -IpAddress '192.168.2.10' -DnsServer1 '192.168.2.5' -Roles WebServer -DomainName $domain -Network 'ZeroTrustWS'
 
-Add-LabMachineDefinition -Name $WS1 -OperatingSystem 'Windows 10 Enterprise' -IpAddress '192.168.2.101' -DnsServer1 '192.168.2.5' -DomainName $domain -Network 'MSRedTeam'
+Add-LabMachineDefinition -Name $WS1 -OperatingSystem 'Windows 10 Enterprise' -IpAddress '192.168.2.101' -DnsServer1 '192.168.2.5' -DomainName $domain -Network 'ZeroTrustWS'
 
-Add-LabMachineDefinition -Name $WS2 -OperatingSystem 'Windows 10 Enterprise' -IpAddress '192.168.2.102' -DnsServer1 '192.168.2.5' -DomainName $domain -Network 'MSRedTeam'
+Add-LabMachineDefinition -Name $WS2 -OperatingSystem 'Windows 10 Enterprise' -IpAddress '192.168.2.102' -DnsServer1 '192.168.2.5' -DomainName $domain -Network 'ZeroTrustWS'
 
-Install-Lab | Add-Content -Path ".\MSRedTeam.log"
+Install-Lab | Add-Content -Path ".\ZeroTrustWS.log"
 
 # Configure fake accounts, OU and groups
 Invoke-LabCommand -ActivityName "Configure Domain Controller" -FilePath C:\tools\Labs\LabSetup\LabSetup.ps1 -ComputerName $DC 
@@ -62,7 +62,7 @@ Restart-LabVM -ComputerName $WS1 -Wait -NoDisplay
 Restart-LabVM -ComputerName $WS2 -Wait -NoDisplay
 
 # Create Service Account for Azure ATP (after restart)
-Invoke-LabCommand -ActivityName "Configure Group Managed Service Account" -ScriptBlock { Add-KdsRootKey –EffectiveImmediately; Add-KdsRootKey –EffectiveTime ((get-date).addhours(-10));New-ADServiceAccount "azureatpgmsa" -DNSHostName "<FQDN DC>" -PrincipalsAllowedToRetrieveManagedPassword "Domain Controllers";Install-ADServiceAccount -Identity "azureatpgmsa";Test-ADServiceAccount "azureatpgmsa" } -ComputerName $DC
+Invoke-LabCommand -ActivityName "Configure Group Managed Service Account" -ScriptBlock { Add-KdsRootKey –EffectiveImmediately; Add-KdsRootKey –EffectiveTime ((get-date).addhours(-10));New-ADServiceAccount "azureatpgmsa" -DNSHostName "dc-02.zerotrustws.xyz" -PrincipalsAllowedToRetrieveManagedPassword "Domain Controllers";Install-ADServiceAccount -Identity "azureatpgmsa";Test-ADServiceAccount "azureatpgmsa" } -ComputerName $DC
 
 # Azure ATP Sensor 
 Copy-LabFileItem -Path "C:\tools\Labs\LabSetup\Azure ATP Sensor Setup.exe" -ComputerName $DC -DestinationFolderPath 'C:\'
