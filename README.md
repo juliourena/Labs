@@ -52,7 +52,7 @@ GOTO USER_CONSENT
 
 ### Install the Lab
 
-**Make sure to change de default credentials!** Go to C:\tools\LabSetup\deploy_lab.ps1 and edit the variables defined: LabName, Domain, DomainName, adminAcct, adminPass, labsources and machines names, also make sure to change C:\tools\LabSetup\SNMPTRAP.ps1 variables.
+**Make sure to change de default credentials!** Go to C:\tools\LabSetup\deploy_lab.ps1 and edit the variables defined: LabName, Domain, DomainName, adminAcct, adminPass, labsources and machines names, also make sure to change C:\tools\LabSetup\ServiceAccount.ps1 variables.
 
 ```
 Import-Module AutomatedLab
