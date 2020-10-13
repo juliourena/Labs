@@ -92,8 +92,8 @@ Invoke-LabCommand -ActivityName "Setting up Local Admin" -ScriptBlock { Add-Loca
 Invoke-LabCommand -ActivityName "Setting up Local Admin" -ScriptBlock { Add-LocalGroupMember -Group 'Administrators' -Member ('DesktopAdmins','lewen') } -ComputerName $WS1
 Invoke-LabCommand -ActivityName "Setting up Local Admin" -ScriptBlock { Add-LocalGroupMember -Group 'Administrators' -Member ('DesktopAdmins', 'kkreps') } -ComputerName $WS2
 
-# Configure sqlservice account to run the service SNMPTraps
-Invoke-LabCommand -ActivityName "Configuring sqlservice account" -FilePath C:\tools\Labs\LabSetup\SNMPTRAP.ps1 -ComputerName $SRVWEB
+# Configure sqlservice account to run the service ALG
+Invoke-LabCommand -ActivityName "Configuring sqlservice account" -FilePath C:\tools\Labs\LabSetup\ServiceAccount.ps1 -ComputerName $SRVWEB
 
 # Copy GPO
 Copy-LabFileItem -Path C:\tools\Labs\LabSetup\GPO -ComputerName $DC -DestinationFolderPath 'C:\'
