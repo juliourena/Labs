@@ -53,7 +53,7 @@ Install-Lab | Add-Content -Path ".\ZeroTrustWS.log"
 Invoke-LabCommand -ActivityName "Configure Domain Controller" -FilePath C:\tools\Labs\LabSetup\LabSetup.ps1 -ComputerName $DC 
 
 # Configurations 
-Invoke-LabCommand -ActivityName "Enable Recycle Bin" -ScriptBlock { Enable-ADOptionalFeature 'Recycle Bin Feature' -Scope ForestOrConfigurationSet -Target msredteam.xyz -Confirm:$false } -ComputerName $DC
+Invoke-LabCommand -ActivityName "Enable Recycle Bin" -ScriptBlock { Enable-ADOptionalFeature 'Recycle Bin Feature' -Scope ForestOrConfigurationSet -Target zerotrustws.xyz -Confirm:$false } -ComputerName $DC
 
 # Restart LabVM to complete the rest of the opperations
 Restart-LabVM -ComputerName $DC -Wait -NoDisplay
