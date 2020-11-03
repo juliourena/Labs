@@ -26,6 +26,12 @@ Install the required modules:
 Install-Module Az -AllowClobber -Force
 Install-PackageProvider Nuget -Force
 Install-Module AutomatedLab -AllowClobber -Force
+
+
+# If you have errors to install run this first!
+Set-ItemProperty -Path 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NetFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Value '1' -Type DWord
+
+Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\.NetFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Value '1' -Type DWord
 ```
 
 Download the [LabSetup](https://github.com/juliourena/Labs/tree/master/LabSetup) directory and copy into C:\tools\.
