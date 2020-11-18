@@ -64,7 +64,7 @@ function Import-LabADUser
     process {
        
         $data = 
-        Import-Csv -Path $Path | select  @{Name="Name";Expression={$_.Surname + ", " + $_.GivenName}},
+        Import-Csv -Path $Path | select  @{Name="Name";Expression={$_.GivenName + " " + $_.Surname}},
                 @{Name="SamAccountName"; Expression={$_.Username}},
                 @{Name="UserPrincipalName"; Expression={$_.Username +"@" + $Domain}},
                 @{Name="GivenName"; Expression={$_.GivenName}},
