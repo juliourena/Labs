@@ -69,7 +69,7 @@ function Import-LabADUser
                 @{Name="UserPrincipalName"; Expression={$_.Username +"@" + $Domain}},
                 @{Name="GivenName"; Expression={$_.GivenName}},
                 @{Name="Surname"; Expression={$_.Surname}},
-                @{Name="DisplayName"; Expression={$_.Surname + ", " + $_.GivenName}},
+                @{Name="DisplayName"; Expression={$_.GivenName + " " + $_.Surname}},
                 @{Name="City"; Expression={$_.City}},
                 @{Name="StreetAddress"; Expression={$_.StreetAddress}},
                 @{Name="State"; Expression={$_.State}},
