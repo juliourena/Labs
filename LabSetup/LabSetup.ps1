@@ -9,6 +9,7 @@
 # Script created by Carlos Perez (darkoperator) modified by Julio Ureña
 
 $DomainDN = ([adsi]'').distinguishedName
+$Domain= (Get-WmiObject win32_computersystem).Domain
 <#
 .SYNOPSIS
     Imports a CSV from Fake Name Generator to create test AD User accounts.
@@ -65,7 +66,7 @@ function Import-LabADUser
         $data = 
         Import-Csv -Path $Path | select  @{Name="Name";Expression={$_.Surname + ", " + $_.GivenName}},
                 @{Name="SamAccountName"; Expression={$_.Username}},
-                @{Name="UserPrincipalName"; Expression={$_.Username +"@" + $forest}},
+                @{Name="UserPrincipalName"; Expression={$_.Username +"@" + $Domain}},
                 @{Name="GivenName"; Expression={$_.GivenName}},
                 @{Name="Surname"; Expression={$_.Surname}},
                 @{Name="DisplayName"; Expression={$_.Surname + ", " + $_.GivenName}},
@@ -74,7 +75,7 @@ function Import-LabADUser
                 @{Name="State"; Expression={$_.State}},
                 @{Name="Country"; Expression={$_.Country}},
                 @{Name="PostalCode"; Expression={$_.ZipCode}},
-                @{Name="EmailAddress"; Expression={$_.Username +"@" + $forest}},
+                @{Name="EmailAddress"; Expression={$_.Username +"@" + $Domain}},
                 @{Name="AccountPassword"; Expression={ (Convertto-SecureString -Force -AsPlainText $_.password)}},
                 @{Name="OfficePhone"; Expression={$_.TelephoneNumber}},
                 @{Name="Title"; Expression={$_.Occupation}},
